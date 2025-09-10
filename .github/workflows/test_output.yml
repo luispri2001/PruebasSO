@@ -16,15 +16,24 @@ jobs:
       
     - name: Configurar entorno
       run: |
+        echo "Estructura del repositorio:"
+        find . -type f -name "*.sh" | sort
+        echo "Permisos de los scripts:"
         chmod +x ./tests/*.sh
         chmod +x ./ejercicios/*.sh
+        ls -la ./tests/
         ls -la ./ejercicios/
+        echo "Contenido de comandos_basicos.sh:"
         cat ./ejercicios/comandos_basicos.sh
         
     - name: Ejecutar tests de comandos básicos (verificación de salida)
       id: test-basicos-output
       continue-on-error: true
-      run: ./tests/test_comandos_basicos_output.sh
+      run: |
+        echo "Directorio actual: $(pwd)"
+        echo "Contenido del directorio tests:"
+        ls -la ./tests/
+        ./tests/test_comandos_basicos_output.sh
       
     # Generar reporte de resultados
     - name: Generar reporte de tests

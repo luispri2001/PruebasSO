@@ -9,8 +9,13 @@ NC='\033[0m' # No Color
 echo "Ejecutando tests para comandos básicos (evaluando salida)..."
 echo "----------------------------------------"
 
+# Guardar el directorio original
+ORIG_DIR=$(pwd)
+echo "Directorio original: $ORIG_DIR"
+
 # Crear directorio temporal para archivos de prueba
 TEST_DIR=$(mktemp -d)
+echo "Directorio temporal: $TEST_DIR"
 cd $TEST_DIR
 
 # Crear archivos de prueba
@@ -27,19 +32,33 @@ echo "Archivo para probar permisos" > archivo.txt
 chmod 644 archivo.txt  # Reiniciar permisos
 
 # Cargar las soluciones del estudiante
-SCRIPT_DIR=$(dirname "$0")
-EJERCICIOS_DIR=$(cd "$SCRIPT_DIR/../ejercicios" && pwd)
-echo "Cargando soluciones desde: $EJERCICIOS_DIR/comandos_basicos.sh"
+echo "Ejecutando desde: $(pwd)"
+echo "Listando contenido del directorio actual:"
+ls -la
 
-if [ ! -f "$EJERCICIOS_DIR/comandos_basicos.sh" ]; then
-    echo "ERROR: No se puede encontrar el archivo de soluciones en $EJERCICIOS_DIR/comandos_basicos.sh"
-    echo "Directorio actual: $(pwd)"
-    echo "Contenido del directorio ejercicios:"
-    ls -la "$EJERCICIOS_DIR"
+# Volver al directorio original para acceder a los ejercicios
+cd $(dirname "$0")/..
+echo "Volviendo al directorio base: $(pwd)"
+echo "Listando contenido del directorio base:"
+ls -la
+
+# Verificar que el directorio ejercicios existe
+if [ ! -d "ejercicios" ]; then
+    echo "ERROR: El directorio 'ejercicios' no existe en $(pwd)"
     exit 1
 fi
 
-source "$EJERCICIOS_DIR/comandos_basicos.sh"
+echo "Listando contenido del directorio ejercicios:"
+ls -la ejercicios/
+
+# Verificar que el archivo comandos_basicos.sh existe
+if [ ! -f "ejercicios/comandos_basicos.sh" ]; then
+    echo "ERROR: El archivo 'comandos_basicos.sh' no existe en $(pwd)/ejercicios"
+    exit 1
+fi
+
+echo "Cargando soluciones desde: $(pwd)/ejercicios/comandos_basicos.sh"
+source "ejercicios/comandos_basicos.sh"
 
 # Test 1: Listar archivos ocultos en formato largo
 echo -n "Test 1 (listar archivos ocultos): "
@@ -117,7 +136,9 @@ else
 fi
 
 # Limpiar
-cd ..
+echo "Volviendo al directorio original: $ORIG_DIR"
+cd "$ORIG_DIR"
+echo "Eliminando directorio temporal: $TEST_DIR"
 rm -rf $TEST_DIR
 
 echo "----------------------------------------"
