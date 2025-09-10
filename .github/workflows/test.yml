@@ -51,6 +51,52 @@ jobs:
       
     - name: Ejecutar tests de directory-info.sh
       id: test-directory-info
+      continue-on-error: true
       run: |
         chmod +x ./ejercicios/directory-info.sh
         ./tests/test_directory_info.sh
+      
+    # Generar reporte de resultados
+    - name: Generar reporte de tests
+      run: |
+        echo "# Resultados de los Tests" > test_results.md
+        echo "" >> test_results.md
+        echo "## Comandos Básicos" >> test_results.md
+        if [[ "${{ steps.test-basicos.outcome }}" == "success" ]]; then
+          echo "✅ **Completado**" >> test_results.md
+        else
+          echo "❌ **Pendiente**" >> test_results.md
+        fi
+        echo "" >> test_results.md
+        
+        echo "## Redirecciones" >> test_results.md
+        if [[ "${{ steps.test-redirecciones.outcome }}" == "success" ]]; then
+          echo "✅ **Completado**" >> test_results.md
+        else
+          echo "❌ **Pendiente**" >> test_results.md
+        fi
+        echo "" >> test_results.md
+        
+        echo "## Pipes" >> test_results.md
+        if [[ "${{ steps.test-pipes.outcome }}" == "success" ]]; then
+          echo "✅ **Completado**" >> test_results.md
+        else
+          echo "❌ **Pendiente**" >> test_results.md
+        fi
+        echo "" >> test_results.md
+        
+        echo "## Shell Scripting" >> test_results.md
+        if [[ "${{ steps.test-directory-info.outcome }}" == "success" ]]; then
+          echo "✅ **Completado**" >> test_results.md
+        else
+          echo "❌ **Pendiente**" >> test_results.md
+        fi
+        
+    - name: Guardar resultados como artefacto
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: test_results.md
+        
+    - name: Imprimir resultados en el log
+      run: cat test_results.md

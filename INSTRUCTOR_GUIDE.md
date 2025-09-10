@@ -4,49 +4,35 @@ Este documento explica cómo configurar y utilizar este repositorio para evaluar
 
 ## Configuración inicial
 
-Para que los badges dinámicos funcionen correctamente, debes seguir estos pasos:
+El sistema ahora genera reportes de resultados como artefactos de GitHub Actions, lo que elimina la necesidad de configurar Gist o tokens de acceso personal.
 
-1. **Crear un GitHub Gist que almacenará los datos de los badges**
-   - Ve a https://gist.github.com/
-   - Crea un nuevo gist público o privado con tres archivos vacíos:
-     - `comando_basico.json`
-     - `redirecciones.json`
-     - `pipes.json`
-   - Puedes simplemente añadir archivos vacíos con esos nombres (el contenido no importa, será reemplazado)
-   - Anota el ID del gist (parte de la URL después de tu nombre de usuario)
-   - Ejemplo: Para un gist en `https://gist.github.com/luispri2001/1a2b3c4d5e6f7g8h9i0j`, el ID es `1a2b3c4d5e6f7g8h9i0j`
+### Visualización de resultados
 
-2. **Crear un token de acceso personal (PAT) en GitHub**
-   - Ve a Settings -> Developer settings -> Personal access tokens -> Tokens (classic)
-   - Haz clic en "Generate new token (classic)"
-   - Asigna un nombre descriptivo como "Badge Updater"
-   - Selecciona solo el permiso `gist`
-   - Genera y copia el token generado (¡importante! no podrás verlo de nuevo)
+Los resultados de los tests se pueden ver de dos formas:
 
-3. **Agregar secrets al repositorio**
-   - En tu repositorio, ve a Settings -> Secrets and variables -> Actions
-   - Haz clic en "New repository secret"
-   - Agrega dos secrets:
-     - Nombre: `GIST_ID`, Valor: El ID del gist que creaste
-     - Nombre: `GIST_SECRET`, Valor: El token de acceso personal que generaste
+1. **En los logs de GitHub Actions**: Al final de la ejecución del workflow, se muestra un resumen de los resultados.
+
+2. **Como artefacto descargable**: Los resultados se guardan como un archivo Markdown que se puede descargar desde la página de Actions.
+
+## Personalización de tests
+
+Para modificar o añadir tests, puedes editar los archivos en la carpeta `tests/`:
+
+- `test_comandos_basicos.sh`: Tests literales para comandos básicos
+- `test_comandos_basicos_output.sh`: Tests basados en salida para comandos básicos
+- `test_redirecciones.sh`: Tests literales para redirecciones
+- `test_redirecciones_output.sh`: Tests basados en salida para redirecciones
+- `test_pipes.sh`: Tests literales para pipes
+- `test_pipes_output.sh`: Tests basados en salida para pipes
+- `test_directory_info.sh`: Tests para el script interactivo
+
+### Tests literales vs. Tests basados en salida
+
+- **Tests literales**: Comparan directamente el comando proporcionado por el estudiante con una lista de comandos considerados correctos. Son más rápidos pero menos flexibles.
+
+- **Tests basados en salida**: Ejecutan el comando proporcionado por el estudiante y verifican que la salida sea la esperada. Son más flexibles y permiten múltiples soluciones para un mismo problema.
 
 ## Solución a errores comunes
-
-### Error 404 al acceder al Gist
-
-Si ves errores como:
-```
-Failed to get gist, response status code: 404, status message: Not Found
-TypeError: Cannot read properties of undefined (reading 'comando_basico.json')
-```
-
-Posibles causas y soluciones:
-1. **El GIST_ID es incorrecto**: Verifica que el ID del Gist sea exactamente el que aparece en la URL.
-2. **El token no tiene permisos suficientes**: Asegúrate de que el token tenga permisos de `gist`.
-3. **Los archivos no existen en el Gist**: Crea manualmente los archivos `comando_basico.json`, `redirecciones.json` y `pipes.json` en el Gist.
-4. **El Gist es privado y el token no tiene acceso**: Si estás usando un Gist privado, asegúrate de que el token tenga acceso a tus Gists privados.
-
-### Los badges no se actualizan
 
 Si los badges se crean pero no se actualizan:
 1. **El token ha expirado**: Genera un nuevo token y actualiza el secret GIST_SECRET.

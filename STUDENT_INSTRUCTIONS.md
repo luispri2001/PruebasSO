@@ -43,6 +43,11 @@ chmod +x ./ejercicios/directory-info.sh
 ./tests/test_redirecciones.sh
 ./tests/test_pipes.sh
 ./tests/test_directory_info.sh
+
+# También puedes probar los tests basados en salida (más flexibles)
+./tests/test_comandos_basicos_output.sh
+./tests/test_redirecciones_output.sh
+./tests/test_pipes_output.sh
 ```
 
 ## Enviando tus soluciones
@@ -94,7 +99,17 @@ chmod +x ./ejercicios/directory-info.sh
 2. Verifica el estado de tus soluciones:
    - Ve a la pestaña "Actions" en tu repositorio de GitHub
    - Verás el estado de las pruebas automáticas
-   - Los badges en el README.md también mostrarán el estado de tus soluciones
+   - Descarga el artefacto "test-results" para ver un resumen detallado de tus resultados
+
+## Visualización de resultados
+
+Después de que los tests se hayan ejecutado en GitHub Actions, podrás ver los resultados de dos formas:
+
+1. **En los logs de GitHub Actions**: Al final de la ejecución del workflow, se mostrará un resumen de los resultados de los tests.
+
+2. **Como artefacto descargable**: Los resultados se guardan como un archivo Markdown que puedes descargar desde la página de Actions.
+
+   ![Ejemplo de Artefacto](https://docs.github.com/assets/cb-25896/mw-1440/images/help/actions/artifact-download-link.webp)
 
 ## Consejos
 

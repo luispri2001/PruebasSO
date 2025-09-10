@@ -14,7 +14,7 @@ Este repositorio contiene un sistema automático para evaluar prácticas de coma
 1. El estudiante hace un fork de este repositorio
 2. Completa los ejercicios en la carpeta `ejercicios/`
 3. Los tests automáticos evalúan la solución
-4. Los badges muestran el estado de los tests
+4. Los resultados se muestran como artefactos descargables en la página de Actions de GitHub
 
 ## Instrucciones para estudiantes
 1. Crea un fork de este repositorio
@@ -22,6 +22,7 @@ Este repositorio contiene un sistema automático para evaluar prácticas de coma
 3. Completa los ejercicios en la carpeta `ejercicios/`
 4. Haz commit y push de tus cambios
 5. Verifica el estado de tus soluciones en la pestaña Actions de tu repositorio
+6. Descarga el artefacto `test-results` para ver un resumen de tus resultados
 
 ## Ejercicios disponibles
 Este repositorio incluye cuatro tipos de ejercicios:
@@ -48,10 +49,32 @@ chmod +x ./tests/*_output.sh
 ./tests/test_pipes_output.sh
 ```
 
-Para usar el flujo de trabajo que incluye tests basados en salida:
-```bash
-# En GitHub Actions
-.github/workflows/test_output.yml
+## Visualización de resultados
+
+Después de que los tests se hayan ejecutado en GitHub Actions, podrás ver los resultados de dos formas:
+
+1. **En los logs de GitHub Actions**: Al final de la ejecución del workflow, se mostrará un resumen de los resultados de los tests.
+
+2. **Como artefacto descargable**: Los resultados se guardan como un archivo Markdown que puedes descargar desde la página de Actions.
+
+   ![Ejemplo de Artefacto](https://docs.github.com/assets/cb-25896/mw-1440/images/help/actions/artifact-download-link.webp)
+
+El archivo de resultados tendrá un formato similar a este:
+
+```markdown
+# Resultados de los Tests
+
+## Comandos Básicos
+✅ **Completado**
+
+## Redirecciones
+✅ **Completado**
+
+## Pipes
+❌ **Pendiente**
+
+## Shell Scripting
+✅ **Completado**
 ```
 
 ## Estructura del repositorio
