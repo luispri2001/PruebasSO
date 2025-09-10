@@ -1,6 +1,6 @@
 # Instrucciones para Estudiantes
 
-Este documento contiene instrucciones detalladas sobre cómo completar los ejercicios de comandos de sistemas operativos.
+Este documento contiene instrucciones detalladas sobre cómo completar los ejercicios de comandos básicos de sistemas operativos.
 
 **Nota: Esta versión del repositorio incluye las soluciones completas como prueba de concepto para verificar que los tests funcionan correctamente. En un entorno de enseñanza real, las soluciones deberían estar en blanco para que los estudiantes las completen.**
 
@@ -15,19 +15,58 @@ Este documento contiene instrucciones detalladas sobre cómo completar los ejerc
 
 ## Completando los ejercicios
 
-1. Los ejercicios se encuentran en la carpeta `ejercicios/`. Hay cuatro archivos:
-   - `comandos_basicos.sh`: Ejercicios sobre comandos básicos de Linux
-   - `redirecciones.sh`: Ejercicios sobre redirección de entrada/salida
-   - `pipes.sh`: Ejercicios sobre el uso de tuberías (pipes)
-   - `directory-info.sh`: Un script bash interactivo para mostrar información sobre directorios
+1. El ejercicio se encuentra en el archivo `ejercicios/comandos_basicos.sh`.
 
-2. Abre cada archivo y completa las soluciones:
+2. Abre el archivo y completa las soluciones:
    ```bash
    # Ejemplo:
    EJERCICIO_1="ls -la"
    ```
 
-3. No modifiques ninguna otra parte del archivo que no sea la variable `EJERCICIO_X` en los tres primeros ejercicios. Para el ejercicio `directory-info.sh`, debes completar todo el script según las instrucciones.
+3. No modifiques ninguna otra parte del archivo que no sea la variable `EJERCICIO_X`.
+
+## Enviando tus soluciones
+
+1. Guarda tus cambios:
+   ```bash
+   git add ejercicios/comandos_basicos.sh
+   git commit -m "Completar ejercicios de comandos básicos"
+   git push
+   ```
+
+2. Verifica el estado de tus soluciones:
+   - Ve a la pestaña "Actions" en tu repositorio de GitHub
+   - Verás el estado de las pruebas automáticas
+   - Descarga el artefacto "test-results" para ver un resumen detallado de tus resultados
+
+## Visualización de resultados
+
+Después de que los tests se hayan ejecutado en GitHub Actions, podrás ver los resultados de dos formas:
+
+1. **En los logs de GitHub Actions**: Al final de la ejecución del workflow, se mostrará un resumen de los resultados de los tests.
+
+2. **Como artefacto descargable**: Los resultados se guardan como un archivo Markdown que puedes descargar desde la página de Actions.
+
+   ![Ejemplo de Artefacto](https://docs.github.com/assets/cb-25896/mw-1440/images/help/actions/artifact-download-link.webp)
+
+## Ejercicios
+
+El archivo `comandos_basicos.sh` contiene 5 ejercicios:
+
+1. Comando para listar todos los archivos (incluyendo ocultos) en formato largo
+2. Comando para crear un directorio llamado "mi_carpeta"
+3. Comando para mostrar el directorio actual de trabajo
+4. Comando para cambiar los permisos de un archivo llamado "archivo.txt" para que sea ejecutable por el usuario
+5. Comando para mostrar las primeras 5 líneas de un archivo llamado "datos.txt"
+
+## Consejos
+
+- Recuerda que puedes usar la ayuda de los comandos con la opción `--help` o el comando `man`
+- Puedes probar los comandos en tu terminal antes de escribirlos en los archivos de soluciones
+- Si tienes problemas con un ejercicio, intenta buscar información sobre el comando específico en recursos como:
+  - [GNU Coreutils](https://www.gnu.org/software/coreutils/manual/coreutils.html)
+  - [Linux Command Library](https://linuxcommandlibrary.com/)
+  - [ExplainShell](https://explainshell.com/)
 
 ## Probando tus soluciones localmente
 

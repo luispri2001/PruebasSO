@@ -1,38 +1,58 @@
 # Guía para Instructores
 
-Este documento explica cómo configurar y utilizar este repositorio para evaluar prácticas de comandos de sistemas operativos.
+Este documento explica cómo configurar y utilizar este repositorio para evaluar prácticas de comandos básicos de sistemas operativos.
 
-## Configuración inicial
+## Descripción general
 
-El sistema ahora genera reportes de resultados como artefactos de GitHub Actions, lo que elimina la necesidad de configurar Gist o tokens de acceso personal.
+Este repositorio ha sido simplificado para enfocarse únicamente en la evaluación de comandos básicos de Linux utilizando Docker para garantizar un entorno consistente.
 
-### Visualización de resultados
+## Estructura del repositorio
 
-Los resultados de los tests se pueden ver de dos formas:
+- **ejercicios/comandos_basicos.sh**: Archivo donde los estudiantes completan los comandos básicos
+- **tests/test_comandos_basicos_output.sh**: Script que verifica la salida de los comandos
+- **.github/workflows/test_output.yml**: Workflow que ejecuta los tests en Docker
 
-1. **En los logs de GitHub Actions**: Al final de la ejecución del workflow, se muestra un resumen de los resultados.
+## Funcionamiento
 
-2. **Como artefacto descargable**: Los resultados se guardan como un archivo Markdown que se puede descargar desde la página de Actions.
+1. El workflow crea una imagen de Docker con Ubuntu y las dependencias necesarias
+2. Copia los archivos de ejercicios y tests al contenedor
+3. Ejecuta el script de prueba que evalúa si los comandos proporcionados por los estudiantes producen los resultados esperados
+4. Genera un informe que se guarda como artefacto de GitHub Actions
 
-## Personalización de tests
+## Ventajas del enfoque basado en Docker
 
-Para modificar o añadir tests, puedes editar los archivos en la carpeta `tests/`:
+- **Entorno controlado**: Evita problemas de configuración o dependencias
+- **Consistencia**: Los tests siempre se ejecutan en el mismo entorno
+- **Reproducibilidad**: Cualquiera puede ejecutar los tests y obtener los mismos resultados
+- **Facilidad de mantenimiento**: El sistema es fácil de actualizar o ampliar
 
-- `test_comandos_basicos.sh`: Tests literales para comandos básicos
-- `test_comandos_basicos_output.sh`: Tests basados en salida para comandos básicos
-- `test_redirecciones.sh`: Tests literales para redirecciones
-- `test_redirecciones_output.sh`: Tests basados en salida para redirecciones
-- `test_pipes.sh`: Tests literales para pipes
-- `test_pipes_output.sh`: Tests basados en salida para pipes
-- `test_directory_info.sh`: Tests para el script interactivo
+## Personalización
 
-### Tests literales vs. Tests basados en salida
+Si desea ampliar este sistema para incluir más ejercicios:
 
-- **Tests literales**: Comparan directamente el comando proporcionado por el estudiante con una lista de comandos considerados correctos. Son más rápidos pero menos flexibles.
-
-- **Tests basados en salida**: Ejecutan el comando proporcionado por el estudiante y verifican que la salida sea la esperada. Son más flexibles y permiten múltiples soluciones para un mismo problema.
+1. Añada nuevos archivos de ejercicios en la carpeta `ejercicios/`
+2. Cree scripts de prueba correspondientes en la carpeta `tests/`
+3. Actualice el archivo Dockerfile en el workflow para incluir las nuevas dependencias si son necesarias
+4. Modifique el workflow para ejecutar los nuevos tests
 
 ## Solución a errores comunes
+
+### Problemas con permisos de ejecución
+
+Si los scripts no se ejecutan correctamente, asegúrese de que tienen permisos de ejecución:
+
+```bash
+chmod +x ./tests/*.sh
+chmod +x ./ejercicios/*.sh
+```
+
+### Error al ejecutar Docker
+
+Si hay problemas con la ejecución de Docker en GitHub Actions, verifique:
+
+1. Que la imagen se está construyendo correctamente
+2. Que los archivos se están copiando al contenedor
+3. Que el comando por defecto está correctamente configurado
 
 Si los badges se crean pero no se actualizan:
 1. **El token ha expirado**: Genera un nuevo token y actualiza el secret GIST_SECRET.

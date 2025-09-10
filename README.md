@@ -1,20 +1,36 @@
-# PruebasSO - Corrector Automático de Comandos
+# PruebasSO - Corrector Automático para Comandos Básicos
 
-[![Tests](https://github.com/luispri2001/PruebasSO/actions/workflows/test.yml/badge.svg)](https://github.com/luispri2001/PruebasSO/actions/workflows/test.yml)
-
-
+[![Tests](https://github.com/luispri2001/PruebasSO/actions/workflows/test_output.yml/badge.svg)](https://github.com/luispri2001/PruebasSO/actions/workflows/test_output.yml)
 [![GitHub license](https://img.shields.io/github/license/luispri2001/PruebasSO)](https://github.com/luispri2001/PruebasSO/blob/main/LICENSE)
 
 ## Descripción
-Este repositorio contiene un sistema automático para evaluar prácticas de comandos de sistemas operativos. Los estudiantes pueden crear un fork de este repositorio, completar los ejercicios y recibir feedback automático sobre sus soluciones.
+Este repositorio contiene un sistema automático para evaluar prácticas de comandos básicos de sistemas operativos. Los estudiantes pueden crear un fork de este repositorio, completar los ejercicios y recibir feedback automático sobre sus soluciones.
 
 **Nota: Esta versión del repositorio incluye las soluciones completas como prueba de concepto para verificar que los tests funcionan correctamente. En un entorno de enseñanza real, las soluciones deberían eliminarse antes de compartir el repositorio con los estudiantes.**
 
 ## Cómo funciona
 1. El estudiante hace un fork de este repositorio
-2. Completa los ejercicios en la carpeta `ejercicios/`
-3. Los tests automáticos evalúan la solución
+2. Completa los ejercicios en el archivo `ejercicios/comandos_basicos.sh`
+3. Los tests automáticos evalúan la solución usando Docker
 4. Los resultados se muestran como artefactos descargables en la página de Actions de GitHub
+
+## Estructura del repositorio
+
+- **ejercicios/comandos_basicos.sh**: Archivo donde los estudiantes completan los comandos básicos
+- **tests/test_comandos_basicos_output.sh**: Script que verifica la salida de los comandos
+- **.github/workflows/test_output.yml**: Workflow que ejecuta los tests en Docker
+
+## Ejecución de tests
+
+El sistema utiliza Docker para crear un entorno controlado donde se ejecutan los tests. Esto garantiza que:
+
+1. El entorno de pruebas es consistente
+2. Se evitan problemas de configuración o dependencias
+3. Los resultados son reproducibles
+
+## Licencia
+
+Este proyecto está bajo la licencia MIT. Ver el archivo LICENSE para más detalles.
 
 ## Instrucciones para estudiantes
 1. Crea un fork de este repositorio
