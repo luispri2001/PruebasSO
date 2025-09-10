@@ -33,8 +33,22 @@ jobs:
       continue-on-error: true
       run: ./tests/test_pipes.sh
       
+    # Verificar si los secretos están configurados
+    - name: Verificar configuración de Gist
+      id: check-gist
+      continue-on-error: true
+      run: |
+        if [[ -z "${{ secrets.GIST_SECRET }}" || -z "${{ secrets.GIST_ID }}" ]]; then
+          echo "Los secretos GIST_SECRET y GIST_ID no están configurados. Los badges no se generarán."
+          echo "no_gist=true" >> $GITHUB_OUTPUT
+        else
+          echo "no_gist=false" >> $GITHUB_OUTPUT
+        fi
+        
     - name: Generar Badge - Comandos Básicos
+      if: steps.check-gist.outputs.no_gist != 'true'
       uses: schneegans/dynamic-badges-action@v1.6.0
+      continue-on-error: true
       with:
         auth: ${{ secrets.GIST_SECRET }}
         gistID: ${{ secrets.GIST_ID }}
@@ -44,7 +58,9 @@ jobs:
         color: ${{ steps.test-basicos.outcome == 'success' && 'success' || 'critical' }}
         
     - name: Generar Badge - Redirecciones
+      if: steps.check-gist.outputs.no_gist != 'true'
       uses: schneegans/dynamic-badges-action@v1.6.0
+      continue-on-error: true
       with:
         auth: ${{ secrets.GIST_SECRET }}
         gistID: ${{ secrets.GIST_ID }}
@@ -54,7 +70,9 @@ jobs:
         color: ${{ steps.test-redirecciones.outcome == 'success' && 'success' || 'critical' }}
         
     - name: Generar Badge - Pipes
+      if: steps.check-gist.outputs.no_gist != 'true'
       uses: schneegans/dynamic-badges-action@v1.6.0
+      continue-on-error: true
       with:
         auth: ${{ secrets.GIST_SECRET }}
         gistID: ${{ secrets.GIST_ID }}
@@ -62,3 +80,18 @@ jobs:
         label: Pipes
         message: ${{ steps.test-pipes.outcome == 'success' && 'Completado' || 'Pendiente' }}
         color: ${{ steps.test-pipes.outcome == 'success' && 'success' || 'critical' }}
+        
+    # Mostrar instrucciones si los badges no se pudieron generar
+    - name: Instrucciones de configuración de Gist
+      if: steps.check-gist.outputs.no_gist == 'true' || failure()
+      run: |
+        echo "⚠️ Los badges no se pudieron generar debido a la falta de configuración de Gist."
+        echo ""
+        echo "Para configurar los badges, sigue estos pasos:"
+        echo "1. Crea un GitHub Gist en https://gist.github.com/"
+        echo "2. Crea un token de acceso personal (PAT) con permisos 'gist' en https://github.com/settings/tokens"
+        echo "3. Agrega los siguientes secrets en tu repositorio (Settings > Secrets and variables > Actions):"
+        echo "   - GIST_ID: El ID del Gist que creaste (parte de la URL después de tu nombre de usuario)"
+        echo "   - GIST_SECRET: El token de acceso personal que generaste"
+        echo ""
+        echo "Consulta el archivo INSTRUCTOR_GUIDE.md para más detalles."
