@@ -1,5 +1,6 @@
+#!/bin/bash
 # Ejercicio 2: Redirecciones
-# Completa las soluciones a continuación
+# Soluciones completas
 
 # 1. Escribe el comando para redirigir la salida del comando 'ls -la' a un archivo llamado "listado.txt"
 EJERCICIO_1="ls -la > listado.txt"

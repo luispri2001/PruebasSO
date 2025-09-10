@@ -1,5 +1,6 @@
+#!/bin/bash
 # Ejercicio 1: Comandos Básicos
-# Completa las soluciones a continuación
+# Soluciones completas
 
 # 1. Escribe el comando para listar todos los archivos, incluyendo los ocultos, en formato largo
 EJERCICIO_1="ls -la"

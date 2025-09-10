@@ -33,6 +33,13 @@ jobs:
       continue-on-error: true
       run: ./tests/test_pipes.sh
       
+    - name: Ejecutar tests de directory-info.sh
+      id: test-directory-info
+      continue-on-error: true
+      run: |
+        chmod +x ./ejercicios/directory-info.sh
+        ./tests/test_directory_info.sh
+      
     # Verificar si los secretos están configurados
     - name: Verificar configuración de Gist
       id: check-gist
@@ -80,6 +87,18 @@ jobs:
         label: Pipes
         message: ${{ steps.test-pipes.outcome == 'success' && 'Completado' || 'Pendiente' }}
         color: ${{ steps.test-pipes.outcome == 'success' && 'success' || 'critical' }}
+        
+    - name: Generar Badge - Shell Scripting
+      if: steps.check-gist.outputs.no_gist != 'true'
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      continue-on-error: true
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: ${{ secrets.GIST_ID }}
+        filename: directory_info.json
+        label: Shell Scripting
+        message: ${{ steps.test-directory-info.outcome == 'success' && 'Completado' || 'Pendiente' }}
+        color: ${{ steps.test-directory-info.outcome == 'success' && 'success' || 'critical' }}
         
     # Mostrar instrucciones si los badges no se pudieron generar
     - name: Instrucciones de configuración de Gist

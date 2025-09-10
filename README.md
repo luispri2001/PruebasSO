@@ -6,6 +6,8 @@
 ## Descripción
 Este repositorio contiene un sistema automático para evaluar prácticas de comandos de sistemas operativos. Los estudiantes pueden crear un fork de este repositorio, completar los ejercicios y recibir feedback automático sobre sus soluciones.
 
+**Nota: Esta versión del repositorio incluye las soluciones completas como prueba de concepto para verificar que los tests funcionan correctamente. En un entorno de enseñanza real, las soluciones deberían eliminarse antes de compartir el repositorio con los estudiantes.**
+
 ## Cómo funciona
 1. El estudiante hace un fork de este repositorio
 2. Completa los ejercicios en la carpeta `ejercicios/`
@@ -20,13 +22,14 @@ Este repositorio contiene un sistema automático para evaluar prácticas de coma
 5. Verifica el estado de tus soluciones en la pestaña Actions de tu repositorio
 
 ## Ejercicios disponibles
-Este repositorio incluye tres tipos de ejercicios:
+Este repositorio incluye cuatro tipos de ejercicios:
 
 1. **Comandos básicos**: Uso de comandos fundamentales como `ls`, `mkdir`, `chmod`, etc.
 2. **Redirecciones**: Manejo de entrada/salida estándar con `>`, `>>`, `<`, etc.
 3. **Pipes**: Uso de tuberías (`|`) para combinar comandos
+4. **Shell scripting**: Creación de un script bash interactivo (`directory-info.sh`) que muestra información sobre directorios
 
-Cada categoría tiene 5 ejercicios que evalúan diferentes aspectos del uso de comandos en sistemas Unix/Linux.
+Los ejercicios 1-3 tienen 5 preguntas cada uno que evalúan diferentes aspectos del uso de comandos en sistemas Unix/Linux. El ejercicio 4 es un script completo que demuestra el uso de funciones, control de flujo, y comandos avanzados en bash.
 
 ## Configuración de badges dinámicos
 Para que los badges dinámicos funcionen correctamente, es necesario configurar:

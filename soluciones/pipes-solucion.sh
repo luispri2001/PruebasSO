@@ -1,5 +1,6 @@
+#!/bin/bash
 # Ejercicio 3: Pipes
-# Completa las soluciones a continuación
+# Soluciones completas
 
 # 1. Escribe el comando para listar todos los procesos y filtrar solo aquellos que contienen la palabra "bash"
 EJERCICIO_1="ps aux | grep bash"
