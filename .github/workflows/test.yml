@@ -1,0 +1,64 @@
+name: Tests de Comandos
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      
+    - name: Configurar entorno
+      run: |
+        chmod +x ./tests/*.sh
+        
+    - name: Ejecutar tests de comandos básicos
+      id: test-basicos
+      continue-on-error: true
+      run: ./tests/test_comandos_basicos.sh
+      
+    - name: Ejecutar tests de redirecciones
+      id: test-redirecciones
+      continue-on-error: true
+      run: ./tests/test_redirecciones.sh
+      
+    - name: Ejecutar tests de pipes
+      id: test-pipes
+      continue-on-error: true
+      run: ./tests/test_pipes.sh
+      
+    - name: Generar Badge - Comandos Básicos
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: ${{ secrets.GIST_ID }}
+        filename: comando_basico.json
+        label: Comandos Básicos
+        message: ${{ steps.test-basicos.outcome == 'success' && 'Completado' || 'Pendiente' }}
+        color: ${{ steps.test-basicos.outcome == 'success' && 'success' || 'critical' }}
+        
+    - name: Generar Badge - Redirecciones
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: ${{ secrets.GIST_ID }}
+        filename: redirecciones.json
+        label: Redirecciones
+        message: ${{ steps.test-redirecciones.outcome == 'success' && 'Completado' || 'Pendiente' }}
+        color: ${{ steps.test-redirecciones.outcome == 'success' && 'success' || 'critical' }}
+        
+    - name: Generar Badge - Pipes
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: ${{ secrets.GIST_ID }}
+        filename: pipes.json
+        label: Pipes
+        message: ${{ steps.test-pipes.outcome == 'success' && 'Completado' || 'Pendiente' }}
+        color: ${{ steps.test-pipes.outcome == 'success' && 'success' || 'critical' }}
