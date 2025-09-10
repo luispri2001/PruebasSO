@@ -27,7 +27,19 @@ echo "Archivo para probar permisos" > archivo.txt
 chmod 644 archivo.txt  # Reiniciar permisos
 
 # Cargar las soluciones del estudiante
-source ./ejercicios/comandos_basicos.sh
+SCRIPT_DIR=$(dirname "$0")
+EJERCICIOS_DIR=$(cd "$SCRIPT_DIR/../ejercicios" && pwd)
+echo "Cargando soluciones desde: $EJERCICIOS_DIR/comandos_basicos.sh"
+
+if [ ! -f "$EJERCICIOS_DIR/comandos_basicos.sh" ]; then
+    echo "ERROR: No se puede encontrar el archivo de soluciones en $EJERCICIOS_DIR/comandos_basicos.sh"
+    echo "Directorio actual: $(pwd)"
+    echo "Contenido del directorio ejercicios:"
+    ls -la "$EJERCICIOS_DIR"
+    exit 1
+fi
+
+source "$EJERCICIOS_DIR/comandos_basicos.sh"
 
 # Test 1: Listar archivos ocultos en formato largo
 echo -n "Test 1 (listar archivos ocultos): "

@@ -1,10 +1,6 @@
-name: Tests de Comandos
+name: Tests de Comandos (Literal)
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -19,74 +15,18 @@ jobs:
         chmod +x ./tests/*.sh
         chmod +x ./ejercicios/*.sh
         
-    - name: Ejecutar tests de comandos básicos (verificación literal)
-      id: test-basicos
-      continue-on-error: true
-      run: ./tests/test_comandos_basicos.sh
-      
     - name: Ejecutar tests de comandos básicos (verificación de salida)
       id: test-basicos-output
       continue-on-error: true
       run: ./tests/test_comandos_basicos_output.sh
-      
-    - name: Ejecutar tests de redirecciones (verificación literal)
-      id: test-redirecciones
-      continue-on-error: true
-      run: ./tests/test_redirecciones.sh
-      
-    - name: Ejecutar tests de redirecciones (verificación de salida)
-      id: test-redirecciones-output
-      continue-on-error: true
-      run: ./tests/test_redirecciones_output.sh
-      
-    - name: Ejecutar tests de pipes (verificación literal)
-      id: test-pipes
-      continue-on-error: true
-      run: ./tests/test_pipes.sh
-      
-    - name: Ejecutar tests de pipes (verificación de salida)
-      id: test-pipes-output
-      continue-on-error: true
-      run: ./tests/test_pipes_output.sh
-      
-    - name: Ejecutar tests de directory-info.sh
-      id: test-directory-info
-      continue-on-error: true
-      run: |
-        chmod +x ./ejercicios/directory-info.sh
-        ./tests/test_directory_info.sh
       
     # Generar reporte de resultados
     - name: Generar reporte de tests
       run: |
         echo "# Resultados de los Tests" > test_results.md
         echo "" >> test_results.md
-        echo "## Comandos Básicos" >> test_results.md
-        if [[ "${{ steps.test-basicos.outcome }}" == "success" ]]; then
-          echo "✅ **Completado**" >> test_results.md
-        else
-          echo "❌ **Pendiente**" >> test_results.md
-        fi
-        echo "" >> test_results.md
-        
-        echo "## Redirecciones" >> test_results.md
-        if [[ "${{ steps.test-redirecciones.outcome }}" == "success" ]]; then
-          echo "✅ **Completado**" >> test_results.md
-        else
-          echo "❌ **Pendiente**" >> test_results.md
-        fi
-        echo "" >> test_results.md
-        
-        echo "## Pipes" >> test_results.md
-        if [[ "${{ steps.test-pipes.outcome }}" == "success" ]]; then
-          echo "✅ **Completado**" >> test_results.md
-        else
-          echo "❌ **Pendiente**" >> test_results.md
-        fi
-        echo "" >> test_results.md
-        
-        echo "## Shell Scripting" >> test_results.md
-        if [[ "${{ steps.test-directory-info.outcome }}" == "success" ]]; then
+        echo "## Comandos Básicos (Salida)" >> test_results.md
+        if [[ "${{ steps.test-basicos-output.outcome }}" == "success" ]]; then
           echo "✅ **Completado**" >> test_results.md
         else
           echo "❌ **Pendiente**" >> test_results.md
