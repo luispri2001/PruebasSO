@@ -1,4 +1,4 @@
-name: Tests de Comandos
+name: Tests de Comandos en Docker
 
 on:
   push:
@@ -18,35 +18,55 @@ jobs:
       run: |
         echo "Estructura del repositorio:"
         find . -type f -name "*.sh" | sort
-        echo "Permisos de los scripts:"
+        echo "Preparando archivos para Docker:"
         chmod +x ./tests/*.sh
         chmod +x ./ejercicios/*.sh
-        ls -la ./tests/
-        ls -la ./ejercicios/
-        echo "Contenido de comandos_basicos.sh:"
-        cat ./ejercicios/comandos_basicos.sh
         
-    - name: Ejecutar tests de comandos básicos (verificación de salida)
-      id: test-basicos-output
+    - name: Crear Dockerfile
+      run: |
+        cat > Dockerfile << 'EOF'
+        FROM ubuntu:latest
+        
+        # Instalar dependencias
+        RUN apt-get update && apt-get install -y \
+            bash \
+            coreutils \
+            procps \
+            findutils \
+            grep \
+            && rm -rf /var/lib/apt/lists/*
+        
+        # Crear estructura de directorios
+        WORKDIR /app
+        RUN mkdir -p /app/ejercicios /app/tests
+        
+        # Copiar archivos
+        COPY ejercicios/ /app/ejercicios/
+        COPY tests/ /app/tests/
+        
+        # Dar permisos de ejecución
+        RUN chmod +x /app/tests/*.sh
+        RUN chmod +x /app/ejercicios/*.sh
+        
+        # Comando por defecto
+        CMD ["/bin/bash", "-c", "/app/tests/test_comandos_basicos_output.sh"]
+        EOF
+        
+        cat Dockerfile
+        
+    - name: Construir imagen Docker
+      run: docker build -t ejercicios-so-test .
+      
+    - name: Ejecutar tests en Docker
+      id: test-docker
       continue-on-error: true
       run: |
-        echo "Directorio actual: $(pwd)"
-        echo "Contenido del directorio tests:"
-        ls -la ./tests/
-        ./tests/test_comandos_basicos_output.sh
+        docker run --name test-container ejercicios-so-test
+        EXIT_CODE=$?
+        docker cp test-container:/app/test_results.md ./test_results.md 2>/dev/null || echo "# Resultados de los Tests\n\n## Comandos Básicos\n❌ **Error en la ejecución**" > test_results.md
+        docker rm test-container
+        exit $EXIT_CODE
       
-    # Generar reporte de resultados
-    - name: Generar reporte de tests
-      run: |
-        echo "# Resultados de los Tests" > test_results.md
-        echo "" >> test_results.md
-        echo "## Comandos Básicos (Salida)" >> test_results.md
-        if [[ "${{ steps.test-basicos-output.outcome }}" == "success" ]]; then
-          echo "✅ **Completado**" >> test_results.md
-        else
-          echo "❌ **Pendiente**" >> test_results.md
-        fi
-        
     - name: Guardar resultados como artefacto
       uses: actions/upload-artifact@v4
       with:

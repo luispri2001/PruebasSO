@@ -9,14 +9,15 @@ NC='\033[0m' # No Color
 echo "Ejecutando tests para comandos básicos (evaluando salida)..."
 echo "----------------------------------------"
 
-# Guardar el directorio original
-ORIG_DIR=$(pwd)
-echo "Directorio original: $ORIG_DIR"
+# Información sobre el entorno
+echo "Script ejecutándose en: $(pwd)"
+echo "Contenido del directorio actual:"
+ls -la
 
 # Crear directorio temporal para archivos de prueba
 TEST_DIR=$(mktemp -d)
-echo "Directorio temporal: $TEST_DIR"
 cd $TEST_DIR
+echo "Directorio temporal creado: $TEST_DIR"
 
 # Crear archivos de prueba
 echo "Línea 1" > datos.txt
@@ -32,33 +33,40 @@ echo "Archivo para probar permisos" > archivo.txt
 chmod 644 archivo.txt  # Reiniciar permisos
 
 # Cargar las soluciones del estudiante
-echo "Ejecutando desde: $(pwd)"
-echo "Listando contenido del directorio actual:"
-ls -la
+echo "Cargando soluciones..."
+source /app/ejercicios/comandos_basicos.sh
+
+# Test 1: Listar archivos ocultos en formato largo
+echo -n "Test 1 (listar archivos ocultos): "
+touch .archivo_oculto  # Crear un archivo oculto para el test
 
 # Volver al directorio original para acceder a los ejercicios
-cd $(dirname "$0")/..
-echo "Volviendo al directorio base: $(pwd)"
-echo "Listando contenido del directorio base:"
+echo "Volviendo al directorio original: $ORIG_DIR"
+cd "$ORIG_DIR"
+echo "Listando contenido del directorio original:"
 ls -la
 
 # Verificar que el directorio ejercicios existe
-if [ ! -d "ejercicios" ]; then
-    echo "ERROR: El directorio 'ejercicios' no existe en $(pwd)"
+if [ ! -d "$ORIG_DIR/ejercicios" ]; then
+    echo "ERROR: El directorio 'ejercicios' no existe en $ORIG_DIR"
     exit 1
 fi
 
 echo "Listando contenido del directorio ejercicios:"
-ls -la ejercicios/
+ls -la "$ORIG_DIR/ejercicios/"
 
 # Verificar que el archivo comandos_basicos.sh existe
-if [ ! -f "ejercicios/comandos_basicos.sh" ]; then
-    echo "ERROR: El archivo 'comandos_basicos.sh' no existe en $(pwd)/ejercicios"
+if [ ! -f "$ORIG_DIR/ejercicios/comandos_basicos.sh" ]; then
+    echo "ERROR: El archivo 'comandos_basicos.sh' no existe en $ORIG_DIR/ejercicios"
     exit 1
 fi
 
-echo "Cargando soluciones desde: $(pwd)/ejercicios/comandos_basicos.sh"
-source "ejercicios/comandos_basicos.sh"
+echo "Cargando soluciones desde: $ORIG_DIR/ejercicios/comandos_basicos.sh"
+source "$ORIG_DIR/ejercicios/comandos_basicos.sh"
+
+# Volver al directorio de pruebas para continuar
+cd "$TEST_DIR"
+echo "Volviendo al directorio de pruebas: $TEST_DIR"
 
 # Test 1: Listar archivos ocultos en formato largo
 echo -n "Test 1 (listar archivos ocultos): "
@@ -136,16 +144,24 @@ else
 fi
 
 # Limpiar
-echo "Volviendo al directorio original: $ORIG_DIR"
-cd "$ORIG_DIR"
-echo "Eliminando directorio temporal: $TEST_DIR"
+cd /app
 rm -rf $TEST_DIR
 
-echo "----------------------------------------"
+# Generar reporte de resultados
+echo "Generando reporte de resultados..."
+echo "# Resultados de los Tests" > /app/test_results.md
+echo "" >> /app/test_results.md
+echo "## Comandos Básicos" >> /app/test_results.md
 if [ -z "$FALLOS" ]; then
+    echo "✅ **Completado**" >> /app/test_results.md
     echo -e "${VERDE}¡Todos los tests basados en salida pasados!${NC}"
     exit 0
 else
+    echo "❌ **Pendiente**" >> /app/test_results.md
+    echo "Detalle de errores:" >> /app/test_results.md
+    if [ "$FALLOS" -gt 0 ]; then
+        echo "- Algunos tests fallaron. Revisa las respuestas." >> /app/test_results.md
+    fi
     echo -e "${ROJO}Algunos tests fallaron. Revisa tus respuestas.${NC}"
     exit 1
 fi
