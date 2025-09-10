@@ -1,6 +1,7 @@
 # PruebasSO - Corrector Automático de Comandos
 
 ![Tests](https://github.com/luispri2001/PruebasSO/actions/workflows/tests.yml/badge.svg)
+
 [![GitHub license](https://img.shields.io/github/license/luispri2001/PruebasSO)](https://github.com/luispri2001/PruebasSO/blob/main/LICENSE)
 
 ## Descripción
