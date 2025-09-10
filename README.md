@@ -33,14 +33,26 @@ Este repositorio incluye cuatro tipos de ejercicios:
 
 Los ejercicios 1-3 tienen 5 preguntas cada uno que evalúan diferentes aspectos del uso de comandos en sistemas Unix/Linux. El ejercicio 4 es un script completo que demuestra el uso de funciones, control de flujo, y comandos avanzados en bash.
 
-## Configuración de badges dinámicos
-Para que los badges dinámicos funcionen correctamente, es necesario configurar:
+## Evaluación de ejercicios
+Los ejercicios pueden ser evaluados de dos formas diferentes:
 
-1. Un GitHub Gist (público o privado)
-2. Un token de acceso personal con permisos de gist
-3. Los secrets GIST_ID y GIST_SECRET en el repositorio
+1. **Evaluación literal**: Compara el comando escrito por el estudiante con una lista de comandos considerados correctos. Este método es rápido pero menos flexible, ya que solo acepta comandos específicos.
 
-Consulta el archivo [INSTRUCTOR_GUIDE.md](INSTRUCTOR_GUIDE.md) para instrucciones detalladas.
+2. **Evaluación basada en salida**: Ejecuta el comando proporcionado por el estudiante y verifica que la salida sea la esperada. Este método es más flexible y permite múltiples soluciones para un mismo problema, siempre que produzcan el resultado correcto.
+
+Para ejecutar los tests basados en salida manualmente:
+```bash
+chmod +x ./tests/*_output.sh
+./tests/test_comandos_basicos_output.sh
+./tests/test_redirecciones_output.sh
+./tests/test_pipes_output.sh
+```
+
+Para usar el flujo de trabajo que incluye tests basados en salida:
+```bash
+# En GitHub Actions
+.github/workflows/test_output.yml
+```
 
 ## Estructura del repositorio
 - `ejercicios/`: Contiene los archivos donde los estudiantes deben escribir sus soluciones

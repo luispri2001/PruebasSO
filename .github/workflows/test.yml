@@ -17,18 +17,37 @@ jobs:
     - name: Configurar entorno
       run: |
         chmod +x ./tests/*.sh
+        chmod +x ./ejercicios/*.sh
         
-    - name: Ejecutar tests de comandos básicos
+    - name: Ejecutar tests de comandos básicos (verificación literal)
       id: test-basicos
+      continue-on-error: true
       run: ./tests/test_comandos_basicos.sh
       
-    - name: Ejecutar tests de redirecciones
+    - name: Ejecutar tests de comandos básicos (verificación de salida)
+      id: test-basicos-output
+      continue-on-error: true
+      run: ./tests/test_comandos_basicos_output.sh
+      
+    - name: Ejecutar tests de redirecciones (verificación literal)
       id: test-redirecciones
+      continue-on-error: true
       run: ./tests/test_redirecciones.sh
       
-    - name: Ejecutar tests de pipes
+    - name: Ejecutar tests de redirecciones (verificación de salida)
+      id: test-redirecciones-output
+      continue-on-error: true
+      run: ./tests/test_redirecciones_output.sh
+      
+    - name: Ejecutar tests de pipes (verificación literal)
       id: test-pipes
+      continue-on-error: true
       run: ./tests/test_pipes.sh
+      
+    - name: Ejecutar tests de pipes (verificación de salida)
+      id: test-pipes-output
+      continue-on-error: true
+      run: ./tests/test_pipes_output.sh
       
     - name: Ejecutar tests de directory-info.sh
       id: test-directory-info

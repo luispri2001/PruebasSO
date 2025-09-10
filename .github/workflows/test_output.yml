@@ -1,0 +1,117 @@
+name: Tests de Comandos
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      
+    - name: Configurar entorno
+      run: |
+        chmod +x ./tests/*.sh
+        chmod +x ./ejercicios/*.sh
+        
+    - name: Ejecutar tests de comandos básicos (verificación literal)
+      id: test-basicos
+      continue-on-error: true
+      run: ./tests/test_comandos_basicos.sh
+      
+    - name: Ejecutar tests de comandos básicos (verificación de salida)
+      id: test-basicos-output
+      continue-on-error: true
+      run: ./tests/test_comandos_basicos_output.sh
+      
+    - name: Ejecutar tests de redirecciones (verificación literal)
+      id: test-redirecciones
+      continue-on-error: true
+      run: ./tests/test_redirecciones.sh
+      
+    - name: Ejecutar tests de redirecciones (verificación de salida)
+      id: test-redirecciones-output
+      continue-on-error: true
+      run: ./tests/test_redirecciones_output.sh
+      
+    - name: Ejecutar tests de pipes (verificación literal)
+      id: test-pipes
+      continue-on-error: true
+      run: ./tests/test_pipes.sh
+      
+    - name: Ejecutar tests de pipes (verificación de salida)
+      id: test-pipes-output
+      continue-on-error: true
+      run: ./tests/test_pipes_output.sh
+      
+    - name: Ejecutar tests de directory-info.sh
+      id: test-directory-info
+      continue-on-error: true
+      run: |
+        chmod +x ./ejercicios/directory-info.sh
+        ./tests/test_directory_info.sh
+      
+    # Verificar si los secretos están configurados
+    - name: Verificar configuración de Gist
+      id: check-gist
+      continue-on-error: true
+      run: |
+        if [[ -z "${{ secrets.GIST_SECRET }}" || -z "${{ secrets.GIST_ID }}" ]]; then
+          echo "Los secretos GIST_SECRET y GIST_ID no están configurados. Los badges no se generarán."
+          echo "no_gist=true" >> $GITHUB_OUTPUT
+        else
+          echo "no_gist=false" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Generar Badge - Comandos Básicos
+      if: steps.check-gist.outputs.no_gist != 'true'
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      continue-on-error: true
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: ${{ secrets.GIST_ID }}
+        filename: comandos_basicos.json
+        label: Comandos Básicos
+        message: ${{ (steps.test-basicos.outcome == 'success' || steps.test-basicos-output.outcome == 'success') && 'Completado' || 'Pendiente' }}
+        color: ${{ (steps.test-basicos.outcome == 'success' || steps.test-basicos-output.outcome == 'success') && 'success' || 'critical' }}
+        
+    - name: Generar Badge - Redirecciones
+      if: steps.check-gist.outputs.no_gist != 'true'
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      continue-on-error: true
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: ${{ secrets.GIST_ID }}
+        filename: redirecciones.json
+        label: Redirecciones
+        message: ${{ (steps.test-redirecciones.outcome == 'success' || steps.test-redirecciones-output.outcome == 'success') && 'Completado' || 'Pendiente' }}
+        color: ${{ (steps.test-redirecciones.outcome == 'success' || steps.test-redirecciones-output.outcome == 'success') && 'success' || 'critical' }}
+        
+    - name: Generar Badge - Pipes
+      if: steps.check-gist.outputs.no_gist != 'true'
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      continue-on-error: true
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: ${{ secrets.GIST_ID }}
+        filename: pipes.json
+        label: Pipes
+        message: ${{ (steps.test-pipes.outcome == 'success' || steps.test-pipes-output.outcome == 'success') && 'Completado' || 'Pendiente' }}
+        color: ${{ (steps.test-pipes.outcome == 'success' || steps.test-pipes-output.outcome == 'success') && 'success' || 'critical' }}
+        
+    - name: Generar Badge - Shell Scripting
+      if: steps.check-gist.outputs.no_gist != 'true'
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      continue-on-error: true
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: ${{ secrets.GIST_ID }}
+        filename: directory_info.json
+        label: Shell Scripting
+        message: ${{ steps.test-directory-info.outcome == 'success' && 'Completado' || 'Pendiente' }}
+        color: ${{ steps.test-directory-info.outcome == 'success' && 'success' || 'critical' }}
