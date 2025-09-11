@@ -9,7 +9,7 @@ EJERCICIO_1="ls -la"
 EJERCICIO_2="mkdir mi_carpeta"
 
 # 3. Escribe el comando para mostrar el directorio actual de trabajo
-EJERCICIO_3="pwd"
+EJERCICIO_3="pwda"
 
 # 4. Escribe el comando para cambiar los permisos de un archivo llamado "archivo.txt" para que sea ejecutable por el usuario
 EJERCICIO_4="chmod u+x archivo.txt"
